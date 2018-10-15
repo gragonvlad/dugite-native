@@ -1,0 +1,36 @@
+variables:
+  GIT_LFS_VERSION: "2.5.2"
+
+resources:
+  repositories:
+    - repository: self
+      checkoutOptions:
+        submodules: true
+
+jobs:
+  - job: Linux
+    pool:
+      vmImage: ubuntu-16.04
+    variables:
+      TARGET_PLATFORM: ubuntu
+      GIT_LFS_CHECKSUM: 624396e8994578ac38c3e5987889be56dba453c378c0675d56cffbc5b8972aa5
+    steps:
+      - script: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libcurl4-openssl-dev
+      - script: script/build.sh
+        name: Build
+      - script: script/package.sh
+        name: Package
+        # TODO: figure out a way to unify these into a single task
+      - task: CopyFiles@2
+        inputs:
+          contents: "output/*.tar.gz"
+          targetFolder: $(Build.ArtifactStagingDirectory)
+          flattenFolders: true
+      - task: CopyFiles@2
+        inputs:
+          contents: "output/*.lzma"
+          targetFolder: $(Build.ArtifactStagingDirectory)
+          flattenFolders: true
+      - task: PublishBuildArtifacts@1
