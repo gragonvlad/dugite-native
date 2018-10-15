@@ -33,6 +33,11 @@ jobs:
           contents: "output/*.lzma"
           targetFolder: $(Build.ArtifactStagingDirectory)
           flattenFolders: true
+      - task: CopyFiles@2
+        inputs:
+          contents: "output/*.sha256"
+          targetFolder: $(Build.ArtifactStagingDirectory)
+          flattenFolders: true
       - task: PublishBuildArtifacts@1
 
   - job: macOS
@@ -55,6 +60,11 @@ jobs:
       - task: CopyFiles@2
         inputs:
           contents: "output/*.lzma"
+          targetFolder: $(Build.ArtifactStagingDirectory)
+          flattenFolders: true
+      - task: CopyFiles@2
+        inputs:
+          contents: "output/*.sha256"
           targetFolder: $(Build.ArtifactStagingDirectory)
           flattenFolders: true
       - task: PublishBuildArtifacts@1
@@ -84,6 +94,11 @@ jobs:
           contents: "output/*.lzma"
           targetFolder: $(Build.ArtifactStagingDirectory)
           flattenFolders: true
+      - task: CopyFiles@2
+        inputs:
+          contents: "output/*.sha256"
+          targetFolder: $(Build.ArtifactStagingDirectory)
+          flattenFolders: true
       - task: PublishBuildArtifacts@1
 
   - job: Windows_32bit
@@ -109,6 +124,11 @@ jobs:
       - task: CopyFiles@2
         inputs:
           contents: "output/*.lzma"
+          targetFolder: $(Build.ArtifactStagingDirectory)
+          flattenFolders: true
+      - task: CopyFiles@2
+        inputs:
+          contents: "output/*.sha256"
           targetFolder: $(Build.ArtifactStagingDirectory)
           flattenFolders: true
       - task: PublishBuildArtifacts@1
