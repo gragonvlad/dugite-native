@@ -59,7 +59,7 @@ jobs:
           flattenFolders: true
       - task: PublishBuildArtifacts@1
 
-  - job: Windows
+  - job: Windows_64bit
     pool:
       vmImage: vs2017-win2016
     variables:
@@ -86,7 +86,7 @@ jobs:
           flattenFolders: true
       - task: PublishBuildArtifacts@1
 
-  - job: Windows
+  - job: Windows_32bit
     pool:
       vmImage: vs2017-win2016
     variables:
