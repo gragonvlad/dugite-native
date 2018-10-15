@@ -40,6 +40,34 @@ jobs:
           flattenFolders: true
       - task: PublishBuildArtifacts@1
 
+  - job: Linux_ARM64
+    pool:
+      vmImage: "ubuntu-16.04"
+    variables:
+      TARGET_PLATFORM: arm64
+    steps:
+      - bash: script/build.sh
+        name: Build
+      - bash: script/package.sh
+        name: Package
+        # TODO: figure out a way to unify these into a single task
+      - task: CopyFiles@2
+        inputs:
+          contents: "output/*.tar.gz"
+          targetFolder: $(Build.ArtifactStagingDirectory)
+          flattenFolders: true
+      - task: CopyFiles@2
+        inputs:
+          contents: "output/*.lzma"
+          targetFolder: $(Build.ArtifactStagingDirectory)
+          flattenFolders: true
+      - task: CopyFiles@2
+        inputs:
+          contents: "output/*.sha256"
+          targetFolder: $(Build.ArtifactStagingDirectory)
+          flattenFolders: true
+      - task: PublishBuildArtifacts@1
+
   - job: macOS
     pool:
       vmImage: xcode9-macos10.13
