@@ -35,6 +35,30 @@ jobs:
           flattenFolders: true
       - task: PublishBuildArtifacts@1
 
+  - job: macOS
+    pool:
+      vmImage: xcode9-macos10.13
+    variables:
+      TARGET_PLATFORM: macOS
+      GIT_LFS_CHECKSUM: eedb80c79f1d3106aa5f1496ddc505e1c1c86c290293d81fb20c5358c615fd74
+    steps:
+      - bash: script/build.sh
+        name: Build
+      - bash: script/package.sh
+        name: Package
+        # TODO: figure out a way to unify these into a single task
+      - task: CopyFiles@2
+        inputs:
+          contents: "output/*.tar.gz"
+          targetFolder: $(Build.ArtifactStagingDirectory)
+          flattenFolders: true
+      - task: CopyFiles@2
+        inputs:
+          contents: "output/*.lzma"
+          targetFolder: $(Build.ArtifactStagingDirectory)
+          flattenFolders: true
+      - task: PublishBuildArtifacts@1
+
   - job: Windows
     pool:
       vmImage: vs2017-win2016
