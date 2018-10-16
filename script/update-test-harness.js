@@ -5,6 +5,9 @@ const YAML = require('node-yaml')
 function writeEnvironmentToFile(os, env) {
   const environmentVariables = env.map(a => `${a} \\`).join('\n')
 
+  const cleanArtefactsStep =
+    os !== 'win32' ? '. "$ROOT/script/clean-artefacts.sh" $DESTINATION' : ''
+
   const script = `build-${os}.sh`
   const fileContents = `#!/bin/bash
 
@@ -15,6 +18,7 @@ DESTINATION="$ROOT/build/git"
 
 ${environmentVariables}
 . "$ROOT/script/${script}" $SOURCE $DESTINATION
+${cleanArtefactsStep}
 
 echo "Archive contents:"
 cd $DESTINATION
